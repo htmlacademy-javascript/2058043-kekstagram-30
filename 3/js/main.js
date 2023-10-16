@@ -27,7 +27,13 @@ const DESCRIPTIONS = [
   '75% моего юмора начинается с плохой фотографии.',
   'Лучшая свадьба — та, на которой ваши желудки полны.'
 ];
-
+const getIdGenerator = () => {
+  let lastIdGenerator = 0;
+  return () => {
+    lastIdGenerator += 1;
+    return lastIdGenerator;
+  };
+};
 function getRandomInteger(a, b) {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
@@ -37,8 +43,11 @@ function getRandomInteger(a, b) {
 const getRandomArrayElement = (elements) =>
   elements[getRandomInteger(0, elements.length - 1)];
 
+const generateCommentId = getIdGenerator();
+const generatePhotoId = getIdGenerator();
+
 const createComment = () => ({
-  id: getRandomInteger (1,25),
+  id: generateCommentId (),
   url: `img/avatar-${ getRandomInteger (1, 6) }.svg`,
   message: getRandomArrayElement(MESSAGES),
   name: getRandomArrayElement(NAMES)
@@ -46,11 +55,11 @@ const createComment = () => ({
 const createComments = Array.from({length: 30}, createComment);
 
 const createPhoto = () => ({
-  id: getRandomInteger (1,25),
+  id: generatePhotoId (),
   avatar: `photos/ ${ getRandomInteger (1, 6) }.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
   likes: getRandomInteger (15,200),
   comments: getRandomArrayElement(createComments)
 });
 const createPhotos = Array.from({length: 25}, createPhoto);
-createPhotos();
+createPhotos;
