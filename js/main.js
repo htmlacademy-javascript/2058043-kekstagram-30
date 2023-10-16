@@ -53,3 +53,4 @@ const createPhoto = () => ({
   comments: getRandomArrayElement(createComments)
 });
 const createPhotos = Array.from({length: 25}, createPhoto);
+createPhotos();
