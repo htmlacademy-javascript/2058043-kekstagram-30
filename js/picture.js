@@ -15,7 +15,7 @@ const createPicture = ({url,description,comments,likes})=> {
 const renderPictures = (pictures) =>{
   const fragment = document.createDocumentFragment();
   pictures.forEach((picture) => {
-    const thumbnail = createPicture(pictures);
+    const thumbnail = createPicture(picture);
     fragment.append(thumbnail);
   });
   container.append(fragment);
