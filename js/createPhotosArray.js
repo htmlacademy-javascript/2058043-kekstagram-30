@@ -18,7 +18,7 @@ const createComment = () => ({
   message: getRandomArrayElement(MESSAGES),
   name: getRandomArrayElement(NAMES)
 });
-const createComments = Array.from({length: 30}, createComment);
+const createComments = () => Array.from({length: 30}, createComment);
 
 const createPhoto = () => ({
   id: generatePhotoId (),

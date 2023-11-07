@@ -1,4 +1,5 @@
 import {createPhotos} from './createPhotosArray.js';
-createPhotos();
-console.log(createPhotos())
+import {renderPictures} from './picture.js';
+renderPictures(createPhotos());
+
 
