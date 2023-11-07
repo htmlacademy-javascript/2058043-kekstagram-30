@@ -1,1 +1,0 @@
-import {createPhotos} from './createPhotosArray.js';
