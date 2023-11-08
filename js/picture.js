@@ -1,23 +1,31 @@
-const pictureTemplate = document.querySelector('#picture')
-  .content
-  .querySelector('.picture');
-const container = document.querySelector('.pictures');
-const createPicture = ({url,likes})=> {
-  const createTemplate = pictureTemplate.cloneNode(true);
-  createTemplate.querySelector('.picture__img').src = url;
+import {describePhotos} from './createPhotosArray.js';
 
+const createPhoto = () => {
+  const fragment = new DocumentFragment();
 
-  createTemplate.querySelector('.picture__likes').textContent = likes;
+  for (const photo of describePhotos(25)) {
+    //шаблон картинки
+    const picture = document.querySelector('#picture').content.cloneNode(true);
 
-  return createPicture;
+    //тэг img
+    const img = picture.querySelector('.picture__img');
+    img.src = photo.url;
+    img.alt = photo.description;
+
+    const likeCount = picture.querySelector('.picture__likes');
+    likeCount.textContent = photo.likes;
+
+    const commentCount = picture.querySelector('.picture__comments');
+    commentCount.textContent = photo.comments.length;
+
+    fragment.append(picture);
+  }
+
+  return fragment;
 };
 
-const renderPictures = (pictures) =>{
-  const fragment = document.createDocumentFragment();
-  pictures.forEach((picture) => {
-    const thumbnail = createPicture(picture);
-    fragment.append(thumbnail);
-  });
-  container.append(fragment);
+window.onload = function() {
+  const fragment = createPhoto();
+  const picture = document.querySelector('.pictures');
+  picture.append(fragment);
 };
-export {renderPictures};
