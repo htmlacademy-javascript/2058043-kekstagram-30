@@ -58,12 +58,12 @@ const createComments = () => Array.from({length: 30}, createComment);
 
 const createPhoto = () => ({
   id: generatePhotoId (),
-  avatar: `photos/ ${ getRandomInteger (1, 6) }.jpg`,
+  url: `photos/ ${ getRandomInteger (1, 6) }.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
   likes: getRandomInteger (15,200),
   comments: getRandomArrayElement(createComments)
 });
-const createPhotos = () => Array.from({length: 25}, createPhoto);
+const createPhotos = () => Array.from({length: 25}, (_, pictureIndex) => createPhoto(pictureIndex + 1),);
 
 import {renderPictures} from './picture.js';
 renderPictures(createPhotos());
