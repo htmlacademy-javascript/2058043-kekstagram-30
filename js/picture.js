@@ -2,10 +2,10 @@ const pictureTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 const container = document.querySelector('.pictures');
-const createPicture = ({url,description,likes})=> {
+const createPicture = ({url,likes})=> {
   const createTemplate = pictureTemplate.cloneNode(true);
   createTemplate.querySelector('.picture__img').src = url;
-  createTemplate.querySelector('.picture__img').alt = description;
+
 
   createTemplate.querySelector('.picture__likes').textContent = likes;
 

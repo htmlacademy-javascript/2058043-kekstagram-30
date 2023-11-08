@@ -55,14 +55,12 @@ const createComment = () => ({
   name: getRandomArrayElement(NAMES)
 });
 const createComments = () => Array.from({length: 30}, createComment);
-
+createComments();
 const createPhoto = () => ({
   id: generatePhotoId (),
   url: `photos/ ${ getRandomInteger (1, 6) }.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
-  likes: getRandomInteger (15,200),
-  comments: getRandomArrayElement(createComments)
-});
+  likes: getRandomInteger (15,200),});
 const createPhotos = () => Array.from({length: 25}, (_, pictureIndex) => createPhoto(pictureIndex + 1),);
 
 import {renderPictures} from './picture.js';
