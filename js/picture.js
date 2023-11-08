@@ -1,4 +1,4 @@
-import {describePhotos} from './createPhotosArray.js';
+import {describePhotos} from './main.js';
 
 const createPhoto = () => {
   const fragment = new DocumentFragment();
