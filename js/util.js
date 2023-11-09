@@ -1,11 +1,18 @@
-function getRandomInteger(a, b) {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-}
-const getRandomArrayElement = (elements) =>
-  elements[getRandomInteger(0, elements.length - 1)];
+//случайное целое
+const getRandomNumber = (left, right) => Math.trunc(Math.random() * (right + 1 - left) + left);
 
-export {getRandomArrayElement};
-export {getRandomInteger};
+//случайное неповторяющееся число в пределах 1000
+const identificators = [];
+
+const chooseAIdentificator = () => {
+  let choice = getRandomNumber(1, 1000);
+
+  while (identificators.includes(choice)) {
+    choice = getRandomNumber(1, 1000);
+  }
+
+  identificators.push(choice);
+  return choice;
+};
+
+export {getRandomNumber, chooseAIdentificator};
