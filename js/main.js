@@ -1,2 +1,3 @@
-import {createPhotos} from './createPhotosArray.js';
-createPhotos();
+import {describePhotos} from './describe-photo.js';
+
+export {describePhotos};
