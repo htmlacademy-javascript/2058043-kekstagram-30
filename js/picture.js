@@ -1,31 +1,30 @@
-import {describePhotos} from './describe-photo.js';
+import{showBigPicture} from './big-picture.js';
+const pictures = document.querySelector('.pictures');
+const pictureTemplate = document.querySelector('#picture')
+  .content.querySelector('.picture');
 
-const createPhoto = () => {
-  const fragment = new DocumentFragment();
+const renderPhoto = (picture) => {
+  const pictureElement = pictureTemplate.cloneNode(true);
 
-  for (const photo of describePhotos(25)) {
-    //шаблон картинки
-    const picture = document.querySelector('#picture').content.cloneNode(true);
+  pictureElement.querySelector('.picture__img').src = picture.url;
+  pictureElement.querySelector('.picture__img').alt = picture.url;
+  pictureElement.querySelector('.picture__comments').textContent = picture.comments.length;
+  pictureElement.querySelector('.picture__likes').textContent = picture.likes;
 
-    //тэг img
-    const img = picture.querySelector('.picture__img');
-    img.src = photo.url;
-    img.alt = photo.description;
-
-    const likeCount = picture.querySelector('.picture__likes');
-    likeCount.textContent = photo.likes;
-
-    const commentCount = picture.querySelector('.picture__comments');
-    commentCount.textContent = photo.comments.length;
-
-    fragment.append(picture);
-  }
-
-  return fragment;
+  const onPictureElementClick = (evt)=>{
+    evt.preventDefault();
+    showBigPicture(picture);
+  };
+  pictureElement.addEventListener('click', onPictureElementClick);
+  return pictureElement;
 };
 
-window.onload = function() {
-  const fragment = createPhoto();
-  const picture = document.querySelector('.pictures');
-  picture.append(fragment);
+const renderPhotos = (photos) => {
+  const fragment = document.createDocumentFragment();
+  photos.forEach((item) => {
+    fragment.appendChild (renderPhoto(item));
+  });
+
+  pictures.appendChild(fragment);
 };
+export {renderPhotos};

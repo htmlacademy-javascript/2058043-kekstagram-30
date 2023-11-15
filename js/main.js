@@ -1,3 +1,3 @@
-import {describePhotos} from './describe-photo.js';
-
-export {describePhotos};
+import { photos } from './data.js';
+import {renderPhotos} from './picture.js';
+renderPhotos(photos);
