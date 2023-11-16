@@ -1,18 +1,9 @@
 //случайное целое
 const getRandomNumber = (left, right) => Math.trunc(Math.random() * (right + 1 - left) + left);
+const getRandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+const getRandomArrayElement = (elements) =>
+  elements[getRandomInteger(0, elements.length - 1)];
 
-//случайное неповторяющееся число в пределах 1000
-const identificators = [];
+const isEscapeKey = (evt) => evt.key === 'Escape';
 
-const chooseAIdentificator = () => {
-  let choice = getRandomNumber(1, 1000);
-
-  while (identificators.includes(choice)) {
-    choice = getRandomNumber(1, 1000);
-  }
-
-  identificators.push(choice);
-  return choice;
-};
-
-export {getRandomNumber, chooseAIdentificator};
+export {getRandomNumber, getRandomArrayElement,getRandomInteger, isEscapeKey};
