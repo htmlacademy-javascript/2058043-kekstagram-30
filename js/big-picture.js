@@ -6,7 +6,6 @@ const pictureCloseButton = document.querySelector('.big-picture__cancel');
 const likesCount = bigPicture.querySelector('.likes-count');
 const commentsList = bigPicture.querySelector('.social__comments');
 const pictureCount = bigPicture.querySelector('.social__caption');
-//const socialCommentCount = bigPicture.querySelector('.social__comment-shown-count');
 const socialTotalCount = bigPicture.querySelector('.social__comment-total-count');
 const commentsLoader = bigPicture.querySelector('.comments-loader');
 
@@ -84,7 +83,6 @@ const showBigPicture = (picture) => {
   bigPictureImage.src = url;
   likesCount.textContent = likes;
   pictureCount.textContent = description;
-  //socialCommentCount.textContent = comments.length;
   socialTotalCount.textContent = comments.length;
 
   document.addEventListener('keydown', closeFullPhotoByEscape);
