@@ -28,3 +28,4 @@ const renderPhotos = (photos) => {
   pictures.appendChild(fragment);
 };
 export {renderPhotos};
+
