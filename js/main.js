@@ -1,6 +1,12 @@
-
-import { photos } from './data.js';
 import {renderPhotos} from './picture.js';
 import './form.js';
+import { getData } from './load.js';
+import {showDataErrorMessage} from './util.js';
 
-renderPhotos(photos);
+let photos = [];
+const loadPhotos = (data) => {
+  photos = data.slice();
+  renderPhotos(photos);
+};
+getData(loadPhotos, showDataErrorMessage);
+
