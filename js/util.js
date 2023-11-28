@@ -9,5 +9,15 @@ const showDataErrorMessage = () => {
     message.remove();
   }, TIME_TO_DELETE_MESSAGE);
 };
+const getRandomNumber = (min, max) => Math.floor(min + Math.random() * (max + 1 - min));
+const getRandomArrayEl = (array) => array[getRandomNumber(0, array.length - 1)];
 
-export {isEscapeKey, showDataErrorMessage};
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export {isEscapeKey, showDataErrorMessage, debounce, getRandomArrayEl};

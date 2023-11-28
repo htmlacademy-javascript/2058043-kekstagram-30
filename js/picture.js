@@ -18,8 +18,13 @@ const renderPhoto = (picture) => {
   pictureElement.addEventListener('click', onPictureElementClick);
   return pictureElement;
 };
-
+const clearPicturesContainer = () => {
+  pictures.querySelectorAll('a.picture').forEach((item) => {
+    item.remove();
+  });
+};
 const renderPhotos = (photos) => {
+  clearPicturesContainer();
   const fragment = document.createDocumentFragment();
   photos.forEach((item) => {
     fragment.appendChild (renderPhoto(item));
