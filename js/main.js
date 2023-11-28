@@ -1,12 +1,13 @@
 import {renderPhotos} from './picture.js';
 import './form.js';
-import { getData } from './load.js';
+import {getData} from './load.js';
 import {showDataErrorMessage} from './util.js';
+import {initFilter} from './filter.js';
 
-let photos = [];
+
 const loadPhotos = (data) => {
-  photos = data.slice();
-  renderPhotos(photos);
+  renderPhotos(data);
+  initFilter(data);
 };
 getData(loadPhotos, showDataErrorMessage);
 
