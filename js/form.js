@@ -65,6 +65,9 @@ const onChooseFileBtnClick = () => {
   if (isCorrectFileType) {
     image.src = URL.createObjectURL(file);
   }
+  form.querySelectorAll('.effects__preview').forEach((item) => {
+    item.style.backgroundImage = `url(${URL.createObjectURL(file)})`;
+  });
 };
 
 closeFormBtn.addEventListener('click', closeForm);
