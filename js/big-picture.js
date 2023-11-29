@@ -1,13 +1,15 @@
-import {isEscapeKey} from './util.js';
+import { isEscapeKey } from './util.js';
+
 const COMMENTS_STEP = 5;
-const bigPicture = document.querySelector('.big-picture');
-const bigPictureImage = bigPicture.querySelector('.big-picture__img img');
-const pictureCloseButton = document.querySelector('.big-picture__cancel');
-const likesCount = bigPicture.querySelector('.likes-count');
-const commentsList = bigPicture.querySelector('.social__comments');
-const pictureCount = bigPicture.querySelector('.social__caption');
-const socialTotalCount = bigPicture.querySelector('.social__comment-total-count');
-const commentsLoader = bigPicture.querySelector('.comments-loader');
+
+const bigPictureElement = document.querySelector('.big-picture');
+const bigPictureImage = bigPictureElement.querySelector('.big-picture__img img');
+const closeBtnElement = document.querySelector('.big-picture__cancel');
+const likesCountElement = bigPictureElement.querySelector('.likes-count');
+const commentsListElement = bigPictureElement.querySelector('.social__comments');
+const pictureCountElement = bigPictureElement.querySelector('.social__caption');
+const socialTotalCount = bigPictureElement.querySelector('.social__comment-total-count');
+const loadBtnElement = bigPictureElement.querySelector('.comments-loader');
 
 const renderComment = ({avatar, name, message}) => `
   <li class="social__comment">
@@ -20,14 +22,14 @@ const renderComment = ({avatar, name, message}) => `
   </li>
 `;
 const renderCurrentComments = (maxIndex, comments) => {
-  let currentIndex = commentsList.children.length;
+  let currentIndex = commentsListElement.children.length;
   if (maxIndex >= comments.length) {
     maxIndex = comments.length;
-    commentsLoader.classList.add('hidden');
+    loadBtnElement.classList.add('hidden');
   }
   while (currentIndex < maxIndex) {
     const comment = renderComment(comments[currentIndex]);
-    commentsList.insertAdjacentHTML('beforeend', comment);
+    commentsListElement.insertAdjacentHTML('beforeend', comment);
     currentIndex++;
   }
 };
@@ -38,24 +40,24 @@ const renderComments = (comments) => {
 
   onloadCommentsBtnClick = () => {
     renderCurrentComments(maxIndex, comments);
-    bigPicture.querySelector('.social__comment-shown-count').textContent = maxIndex > comments.length ? comments.length : maxIndex;
+    bigPictureElement.querySelector('.social__comment-shown-count').textContent = maxIndex > comments.length ? comments.length : maxIndex;
     maxIndex += COMMENTS_STEP;
   };
 
-  commentsList.innerHTML = '';
-  commentsLoader.classList.remove('hidden');
+  commentsListElement.innerHTML = '';
+  loadBtnElement.classList.remove('hidden');
   onloadCommentsBtnClick();
-  commentsLoader.addEventListener('click', onloadCommentsBtnClick);
+  loadBtnElement.addEventListener('click', onloadCommentsBtnClick);
 };
 
 
 const closeFullPhoto = () => {
-  bigPicture.classList.add('hidden');
+  bigPictureElement.classList.add('hidden');
 
   document.body.classList.remove('modal-open');
 
-  commentsLoader.removeEventListener('click', onloadCommentsBtnClick);
-  pictureCloseButton.removeEventListener('click', closeFullPhoto);
+  loadBtnElement.removeEventListener('click', onloadCommentsBtnClick);
+  closeBtnElement.removeEventListener('click', closeFullPhoto);
   document.removeEventListener('keydown', closeFullPhotoByEscape);
 };
 
@@ -71,21 +73,22 @@ function closeFullPhotoByEscape (evt) {
 const onCloseBigPictureClick = () => {
   closeFullPhoto();
 
-  pictureCloseButton.removeEventListener('click', onCloseBigPictureClick);
+  closeBtnElement.removeEventListener('click', onCloseBigPictureClick);
 };
 
 const showBigPicture = (picture) => {
   const {url,likes,comments,description} = picture;
   renderComments(comments);
-  bigPicture.classList.remove('hidden');
+  bigPictureElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
   bigPictureImage.src = url;
-  likesCount.textContent = likes;
-  pictureCount.textContent = description;
+  likesCountElement.textContent = likes;
+  pictureCountElement.textContent = description;
   socialTotalCount.textContent = comments.length;
 
   document.addEventListener('keydown', closeFullPhotoByEscape);
-  pictureCloseButton.addEventListener('click', onCloseBigPictureClick);
+  closeBtnElement.addEventListener('click', onCloseBigPictureClick);
 };
-export {showBigPicture};
+export { showBigPicture };
+

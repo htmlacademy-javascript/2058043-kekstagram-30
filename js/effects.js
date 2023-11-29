@@ -1,6 +1,6 @@
-const slider = document.querySelector('.effect-level__slider');
-const image = document.querySelector('.img-upload__preview img');
-const effectInput = document.querySelector('.effect-level__value');
+const sliderElement = document.querySelector('.effect-level__slider');
+const imageElement = document.querySelector('.img-upload__preview img');
+const effectInputElement = document.querySelector('.effect-level__value');
 
 const Effects = {
   CHROME: 'chrome',
@@ -73,7 +73,7 @@ const sliderOptions = {
 
 let effectName = Effects.DEFAULT;
 
-noUiSlider.create(slider, {
+noUiSlider.create(sliderElement, {
   range: {
     min: sliderOptions[effectName].min,
     max: sliderOptions[effectName].max
@@ -87,11 +87,11 @@ noUiSlider.create(slider, {
   }
 });
 
-slider.noUiSlider.on('update', () => {
-  const value = slider.noUiSlider.get();
+sliderElement.noUiSlider.on('update', () => {
+  const value = sliderElement.noUiSlider.get();
   const {style, unit} = nameEffectForFilter[effectName];
-  effectInput.value = value;
-  image.style.filter = `${style}(${value}${unit})`;
+  effectInputElement.value = value;
+  imageElement.style.filter = `${style}(${value}${unit})`;
 });
 
 const getUpdateOptions = ({min, max, step}) => ({
@@ -106,14 +106,14 @@ const getUpdateOptions = ({min, max, step}) => ({
 const changeSliderOptions = (evt) => {
   if (evt.target.closest('input')) {
     effectName = evt.target.value;
-    slider.noUiSlider.updateOptions(getUpdateOptions(sliderOptions[effectName]));
+    sliderElement.noUiSlider.updateOptions(getUpdateOptions(sliderOptions[effectName]));
     if (effectName === Effects.DEFAULT) {
-      slider.parentNode.classList.add('hidden');
-      image.style.removeProperty('filter');
+      sliderElement.parentNode.classList.add('hidden');
+      imageElement.style.removeProperty('filter');
       return;
     }
-    slider.parentNode.classList.remove('hidden');
+    sliderElement.parentNode.classList.remove('hidden');
   }
 };
 
-export {changeSliderOptions};
+export { changeSliderOptions };
