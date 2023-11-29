@@ -1,7 +1,6 @@
 import { isEscapeKey } from './util.js';
 const COMMENTS_STEP = 5;
 const bigPictureElement = document.querySelector('.big-picture');
-const bigPictureImage = bigPictureElement.querySelector('.big-picture__img img');
 const closeBtnElement = document.querySelector('.big-picture__cancel');
 const commentsListElement = bigPictureElement.querySelector('.social__comments');
 const loadBtnElement = bigPictureElement.querySelector('.comments-loader');
@@ -45,16 +44,25 @@ const renderComments = (comments) => {
   loadBtnElement.addEventListener('click', onloadCommentsBtnClick);
 };
 
+const renderFullPhoto = ({url, likes, comments, description}) => {
+
+  bigPictureElement.querySelector('img').src = url;
+  bigPictureElement.querySelector('.likes-count').textContent = likes;
+  bigPictureElement.querySelector('.social__comment-total-count').textContent = comments.length;
+  bigPictureElement.querySelector('.social__caption').textContent = description;
+
+  renderComments(comments);
+};
 
 const closeFullPhoto = () => {
-  bigPictureElement.classList.add('hidden');
 
+  bigPictureElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
   loadBtnElement.removeEventListener('click', onloadCommentsBtnClick);
-  closeBtnElement.removeEventListener('click', closeFullPhoto);
   document.removeEventListener('keydown', onEscapeBtnKeydown);
 };
+
 
 function onEscapeBtnKeydown (evt) {
 
@@ -65,23 +73,15 @@ function onEscapeBtnKeydown (evt) {
 }
 
 
-const onCloseBigPictureClick = () => {
-  closeFullPhoto();
+closeBtnElement.addEventListener('click', () => closeFullPhoto());
 
-  closeBtnElement.removeEventListener('click', onCloseBigPictureClick);
-};
 
 const showBigPicture = (picture) => {
-  const {url,likes,comments,description} = picture;
-  renderComments(comments);
-  bigPictureElement.classList.remove('hidden');
+  renderFullPhoto(picture);
   document.body.classList.add('modal-open');
+  bigPictureElement.classList.remove('hidden');
 
-  bigPictureImage.src = url;
-  bigPictureElement.querySelector('.likes-count').textContent = likes;
-  bigPictureElement.querySelector('.social__caption').textContent = description;
-  bigPictureElement.querySelector('.social__comment-total-count').textContent = comments.length;
+
   document.addEventListener('keydown', onEscapeBtnKeydown);
-  closeBtnElement.addEventListener('click', onCloseBigPictureClick);
 };
 export { showBigPicture };
