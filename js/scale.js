@@ -4,10 +4,10 @@ const Zoom = {
   STEP: 25
 };
 
-const scaleInput = document.querySelector('.scale__control--value');
+const scaleInputElement = document.querySelector('.scale__control--value');
 
 const changeScale = (factor = 1) => {
-  let newValue = parseInt(scaleInput.value, 10);
+  let newValue = parseInt(scaleInputElement.value, 10);
   newValue = newValue + Zoom.STEP * factor;
   if (newValue > Zoom.MAX) {
     newValue = Zoom.MAX;
@@ -15,7 +15,7 @@ const changeScale = (factor = 1) => {
   if (newValue < Zoom.MIN) {
     newValue = Zoom.MIN;
   }
-  scaleInput.value = `${newValue}%`;
+  scaleInputElement.value = `${newValue}%`;
   document.querySelector('.img-upload__preview img').style.transform = `scale(${newValue / 100})`;
 };
 
@@ -28,4 +28,4 @@ const onScaleBtnClick = (evt) => {
   }
 };
 
-export {onScaleBtnClick};
+export { onScaleBtnClick };
