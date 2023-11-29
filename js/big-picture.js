@@ -1,13 +1,19 @@
 import { isEscapeKey } from './util.js';
+
 const COMMENTS_STEP = 5;
+
 const bigPictureElement = document.querySelector('.big-picture');
+const bigPictureImage = bigPictureElement.querySelector('.big-picture__img img');
 const closeBtnElement = document.querySelector('.big-picture__cancel');
+const likesCountElement = bigPictureElement.querySelector('.likes-count');
 const commentsListElement = bigPictureElement.querySelector('.social__comments');
+const pictureCountElement = bigPictureElement.querySelector('.social__caption');
+const socialTotalCount = bigPictureElement.querySelector('.social__comment-total-count');
 const loadBtnElement = bigPictureElement.querySelector('.comments-loader');
 
 const renderComment = ({avatar, name, message}) => `
   <li class="social__comment">
-    <i
+    <img
       class="social__picture"
       src="${avatar}"
       alt="${name}"
@@ -44,27 +50,18 @@ const renderComments = (comments) => {
   loadBtnElement.addEventListener('click', onloadCommentsBtnClick);
 };
 
-const renderFullPhoto = ({url, likes, comments, description}) => {
-
-  bigPictureElement.querySelector('img').src = url;
-  bigPictureElement.querySelector('.likes-count').textContent = likes;
-  bigPictureElement.querySelector('.social__comment-total-count').textContent = comments.length;
-  bigPictureElement.querySelector('.social__caption').textContent = description;
-
-  renderComments(comments);
-};
 
 const closeFullPhoto = () => {
-
   bigPictureElement.classList.add('hidden');
+
   document.body.classList.remove('modal-open');
 
   loadBtnElement.removeEventListener('click', onloadCommentsBtnClick);
-  document.removeEventListener('keydown', onEscapeBtnKeydown);
+  closeBtnElement.removeEventListener('click', closeFullPhoto);
+  document.removeEventListener('keydown', closeFullPhotoByEscape);
 };
 
-
-function onEscapeBtnKeydown (evt) {
+function closeFullPhotoByEscape (evt) {
 
   if (isEscapeKey(evt)) {
     evt.preventDefault();
@@ -73,15 +70,24 @@ function onEscapeBtnKeydown (evt) {
 }
 
 
-closeBtnElement.addEventListener('click', () => closeFullPhoto());
+const onCloseBigPictureClick = () => {
+  closeFullPhoto();
 
+  closeBtnElement.removeEventListener('click', onCloseBigPictureClick);
+};
 
 const showBigPicture = (picture) => {
-  renderFullPhoto(picture);
-  document.body.classList.add('modal-open');
+  const {url,likes,comments,description} = picture;
+  renderComments(comments);
   bigPictureElement.classList.remove('hidden');
+  document.body.classList.add('modal-open');
 
+  bigPictureImage.src = url;
+  likesCountElement.textContent = likes;
+  pictureCountElement.textContent = description;
+  socialTotalCount.textContent = comments.length;
 
-  document.addEventListener('keydown', onEscapeBtnKeydown);
+  document.addEventListener('keydown', closeFullPhotoByEscape);
+  closeBtnElement.addEventListener('click', onCloseBigPictureClick);
 };
 export { showBigPicture };

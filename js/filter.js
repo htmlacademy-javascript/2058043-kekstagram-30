@@ -1,5 +1,5 @@
-import {renderPhotos} from './picture.js';
-import {getRandomArrayEl, debounce} from './util.js';
+import { renderPhotos } from './picture.js';
+import { getRandomArrayEl, debounce } from './util.js';
 
 const RANDOM_PHOTOS_LENGTH = 10;
 const DELAY = 500;
