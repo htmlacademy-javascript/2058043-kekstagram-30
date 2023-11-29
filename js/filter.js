@@ -4,8 +4,8 @@ import {getRandomArrayEl, debounce} from './util.js';
 const RANDOM_PHOTOS_LENGTH = 10;
 const DELAY = 500;
 
-const filterContainer = document.querySelector('.img-filters');
-const filter = filterContainer.querySelector('.img-filters__form');
+const filterContainerElement = document.querySelector('.img-filters');
+const filterElement = filterContainerElement.querySelector('.img-filters__form');
 let photos = [];
 const getRandomPhotos = (data) => {
   const randomPhotos = new Set();
@@ -20,12 +20,12 @@ const getDiscussedPhotos = (data) => {
 };
 
 const changeActiveFilterBtnClass = (evt) => {
-  filter.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
+  filterElement.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
   evt.target.classList.add('img-filters__button--active');
 };
 
 const setFilter = (cb) => {
-  filter.addEventListener('click', (evt) => {
+  filterElement.addEventListener('click', (evt) => {
     let newPhotos = photos.slice();
     changeActiveFilterBtnClass(evt);
     switch (evt.target.id) {
@@ -40,7 +40,7 @@ const setFilter = (cb) => {
 };
 const initFilter = (data) => {
   photos = data.slice();
-  filterContainer.classList.remove('img-filters--inactive');
+  filterContainerElement.classList.remove('img-filters--inactive');
   setFilter(debounce(renderPhotos, DELAY));
 };
-export {initFilter};
+export { initFilter };

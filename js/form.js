@@ -1,5 +1,5 @@
-import {isEscapeKey} from './util.js';
-import {changeSliderOptions as onEffectsClickHandler} from './effects.js';
+import { isEscapeKey } from './util.js';
+import { changeSliderOptions as onEffectsListClick } from './effects.js';
 import { sendData } from './load.js';
 import { onScaleBtnClick } from './scale.js';
 import { showErrorMessage, showSuccessMessage } from './messages.js';
@@ -8,36 +8,36 @@ const MAX_COMMENT_LENGTH = 140;
 const MAX_HASHTAGS = 5;
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
-const form = document.querySelector('.img-upload__form');
-const inputPhoto = form.querySelector('.img-upload__input');
-const formToEditPhoto = form.querySelector('.img-upload__overlay');
-const closeFormBtn = form.querySelector('.img-upload__cancel');
+const formContainerElement = document.querySelector('.img-upload__form');
+const inputPhotoElement = formContainerElement.querySelector('.img-upload__input');
+const formElement = formContainerElement.querySelector('.img-upload__overlay');
+const closeFormBtnElement = formContainerElement.querySelector('.img-upload__cancel');
 
-const hashtagInput = form.querySelector('.text__hashtags');
-const commentInput = form.querySelector('.text__description');
+const hashtagInputElement = formContainerElement.querySelector('.text__hashtags');
+const commentInputElement = formContainerElement.querySelector('.text__description');
 
-const effectsList = form.querySelector('.effects__list');
-const image = form.querySelector('.img-upload__preview img');
+const effectsListElement = formContainerElement.querySelector('.effects__list');
+const imageElement = formContainerElement.querySelector('.img-upload__preview img');
 
 const resetCloseByEscape = (evt) => evt.stopPropagation();
 
 const regexpForHashtag = /^#[\wа-яё]{1,19}$/i;
 
-const pristine = new Pristine(form, {
+const pristine = new Pristine(formContainerElement, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextClass: 'img-upload__field-wrapper--error',
 });
 
 const closeForm = () => {
-  formToEditPhoto.classList.add('hidden');
+  formElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
   document.removeEventListener('keydown', closeFormByEscape);
 
-  image.style.removeProperty('transform');
-  image.style.removeProperty('filter');
-  form.reset();
+  imageElement.style.removeProperty('transform');
+  imageElement.style.removeProperty('filter');
+  formContainerElement.reset();
   pristine.reset();
 };
 
@@ -50,7 +50,7 @@ function closeFormByEscape (evt) {
 }
 
 const openForm = () => {
-  formToEditPhoto.classList.remove('hidden');
+  formElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.querySelector('.img-upload__effect-level').classList.add('hidden');
 
@@ -60,22 +60,22 @@ const openForm = () => {
 const onChooseFileBtnClick = () => {
   openForm();
 
-  const file = inputPhoto.files[0];
+  const file = inputPhotoElement.files[0];
   const isCorrectFileType = FILE_TYPES.some((item) => file.name.toLowerCase().endsWith(item));
   if (isCorrectFileType) {
-    image.src = URL.createObjectURL(file);
+    imageElement.src = URL.createObjectURL(file);
   }
-  form.querySelectorAll('.effects__preview').forEach((item) => {
+  formContainerElement.querySelectorAll('.effects__preview').forEach((item) => {
     item.style.backgroundImage = `url(${URL.createObjectURL(file)})`;
   });
 };
 
-closeFormBtn.addEventListener('click', closeForm);
-hashtagInput.addEventListener('keydown', resetCloseByEscape);
-commentInput.addEventListener('keydown', resetCloseByEscape);
-effectsList.addEventListener('click', onEffectsClickHandler);
-form.querySelector('.img-upload__scale').addEventListener('click', onScaleBtnClick);
-inputPhoto.addEventListener('change', onChooseFileBtnClick);
+closeFormBtnElement.addEventListener('click', closeForm);
+hashtagInputElement.addEventListener('keydown', resetCloseByEscape);
+commentInputElement.addEventListener('keydown', resetCloseByEscape);
+effectsListElement.addEventListener('click', onEffectsListClick);
+formContainerElement.querySelector('.img-upload__scale').addEventListener('click', onScaleBtnClick);
+inputPhotoElement.addEventListener('change', onChooseFileBtnClick);
 
 const validateHashtag = (value) => {
   const hashtagArr = value.toLowerCase().trim().split(/\s+/);
@@ -86,7 +86,7 @@ const validateHashtag = (value) => {
 };
 
 const getHashtagErrorMessage = () => {
-  const hashtagArr = hashtagInput.value.toLowerCase().trim().split(/\s+/);
+  const hashtagArr = hashtagInputElement.value.toLowerCase().trim().split(/\s+/);
 
   if (hashtagArr.find((item) => !regexpForHashtag.test(item))) {
     return 'Введён невалидный хэш-тег';
@@ -99,23 +99,23 @@ const getHashtagErrorMessage = () => {
   }
 };
 
-pristine.addValidator(hashtagInput, validateHashtag, getHashtagErrorMessage);
+pristine.addValidator(hashtagInputElement, validateHashtag, getHashtagErrorMessage);
 
 const validateComment = (value) => value.length < MAX_COMMENT_LENGTH;
 
-pristine.addValidator(commentInput, validateComment, `Длина комментария больше ${MAX_COMMENT_LENGTH} символов`);
+pristine.addValidator(commentInputElement, validateComment, `Длина комментария больше ${MAX_COMMENT_LENGTH} символов`);
 
 const sendForm = () => {
   showSuccessMessage();
   closeForm();
-  form.querySelector('.img-upload__submit').disabled = false;
+  formContainerElement.querySelector('.img-upload__submit').disabled = false;
 };
 
-form.addEventListener('submit', (evt) => {
+formContainerElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
   if (pristine.validate()) {
-    const data = new FormData(form);
-    form.querySelector('.img-upload__submit').disabled = true;
+    const data = new FormData(formContainerElement);
+    formContainerElement.querySelector('.img-upload__submit').disabled = true;
     sendData(sendForm, showErrorMessage, 'POST', data);
   }
 });
