@@ -20,7 +20,6 @@ const commentInputElement = formContainerElement.querySelector('.text__descripti
 const effectsListElement = formContainerElement.querySelector('.effects__list');
 const imageElement = formContainerElement.querySelector('.img-upload__preview img');
 
-
 const regexpForHashtag = /^#[\wа-яё]{1,19}$/i;
 
 const pristine = new Pristine(formContainerElement, {
@@ -69,11 +68,11 @@ const onChooseFileBtnClick = () => {
     item.style.backgroundImage = `url(${URL.createObjectURL(file)})`;
   });
 };
-const isInvalidHashtag = (item) => !regexpForHashtag.test(item);
+const isValidHashtag = (item) => !regexpForHashtag.test(item);
 const validateHashtag = (value) => {
   const hashtagArr = value.toLowerCase().trim().split(/\s+/);
 
-  return !(hashtagArr.find(isInvalidHashtag)) &&
+  return !(hashtagArr.find(isValidHashtag)) &&
         !(hashtagArr.length > MAX_HASHTAGS) &&
         (new Set(hashtagArr).size === hashtagArr.length);
 };
@@ -81,7 +80,7 @@ const validateHashtag = (value) => {
 const getHashtagErrorMessage = () => {
   const hashtagArr = hashtagInputElement.value.toLowerCase().trim().split(/\s+/);
 
-  if (hashtagArr.find(isInvalidHashtag)) {
+  if (hashtagArr.find(isValidHashtag)) {
     return 'Введён невалидный хэш-тег';
   }
   if (hashtagArr.length > MAX_HASHTAGS) {
@@ -105,12 +104,12 @@ const sendForm = () => {
 };
 
 
-const initializeForm = () => {
-  const resetCloseByEscape = (evt) => evt.stopPropagation();
+const setupForm = () => {
+  const preventCloseByEscape = (evt) => evt.stopPropagation();
 
   closeFormBtnElement.addEventListener('click', closeUploadForm);
-  hashtagInputElement.addEventListener('keydown', resetCloseByEscape);
-  commentInputElement.addEventListener('keydown', resetCloseByEscape);
+  hashtagInputElement.addEventListener('keydown', preventCloseByEscape);
+  commentInputElement.addEventListener('keydown', preventCloseByEscape);
   effectsListElement.addEventListener('click', onEffectsListClick);
   formContainerElement.querySelector('.img-upload__scale').addEventListener('click', onScaleBtnClick);
   inputPhotoElement.addEventListener('change', onChooseFileBtnClick);
@@ -124,4 +123,4 @@ const initializeForm = () => {
     }
   });
 };
-export { initializeForm };
+export { setupForm };
