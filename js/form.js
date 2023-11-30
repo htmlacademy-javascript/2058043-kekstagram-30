@@ -69,11 +69,11 @@ const onChooseFileBtnClick = () => {
     item.style.backgroundImage = `url(${URL.createObjectURL(file)})`;
   });
 };
-
+const isInvalidHashtag = (item) => !regexpForHashtag.test(item);
 const validateHashtag = (value) => {
   const hashtagArr = value.toLowerCase().trim().split(/\s+/);
 
-  return !(hashtagArr.find((item) => !regexpForHashtag.test(item))) &&
+  return !(hashtagArr.find(isInvalidHashtag)) &&
         !(hashtagArr.length > MAX_HASHTAGS) &&
         (new Set(hashtagArr).size === hashtagArr.length);
 };
@@ -81,7 +81,7 @@ const validateHashtag = (value) => {
 const getHashtagErrorMessage = () => {
   const hashtagArr = hashtagInputElement.value.toLowerCase().trim().split(/\s+/);
 
-  if (hashtagArr.find((item) => !regexpForHashtag.test(item))) {
+  if (hashtagArr.find(isInvalidHashtag)) {
     return 'Введён невалидный хэш-тег';
   }
   if (hashtagArr.length > MAX_HASHTAGS) {
