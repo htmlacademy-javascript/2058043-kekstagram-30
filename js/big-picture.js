@@ -33,12 +33,12 @@ const renderCurrentComments = (maxIndex, comments) => {
     currentIndex++;
   }
 };
-let onloadCommentsBtnClick;
+let onLoadCommentsBtnClick;
 
 const renderComments = (comments) => {
   let maxIndex = COMMENTS_STEP;
 
-  onloadCommentsBtnClick = () => {
+  onLoadCommentsBtnClick = () => {
     renderCurrentComments(maxIndex, comments);
     bigPictureElement.querySelector('.social__comment-shown-count').textContent = maxIndex > comments.length ? comments.length : maxIndex;
     maxIndex += COMMENTS_STEP;
@@ -46,8 +46,8 @@ const renderComments = (comments) => {
 
   commentsListElement.innerHTML = '';
   loadBtnElement.classList.remove('hidden');
-  onloadCommentsBtnClick();
-  loadBtnElement.addEventListener('click', onloadCommentsBtnClick);
+  onLoadCommentsBtnClick();
+  loadBtnElement.addEventListener('click', onLoadCommentsBtnClick);
 };
 
 
@@ -56,12 +56,12 @@ const closeFullPhoto = () => {
 
   document.body.classList.remove('modal-open');
 
-  loadBtnElement.removeEventListener('click', onloadCommentsBtnClick);
+  loadBtnElement.removeEventListener('click', onLoadCommentsBtnClick);
   closeBtnElement.removeEventListener('click', closeFullPhoto);
-  document.removeEventListener('keydown', closeFullPhotoByEscape);
+  document.removeEventListener('keydown', onEscapeBtnKeydown);
 };
 
-function closeFullPhotoByEscape (evt) {
+function onEscapeBtnKeydown (evt) {
 
   if (isEscapeKey(evt)) {
     evt.preventDefault();
@@ -87,7 +87,7 @@ const showBigPicture = (picture) => {
   pictureCountElement.textContent = description;
   socialTotalCount.textContent = comments.length;
 
-  document.addEventListener('keydown', closeFullPhotoByEscape);
+  document.addEventListener('keydown', onEscapeBtnKeydown);
   closeBtnElement.addEventListener('click', onCloseBigPictureClick);
 };
 export { showBigPicture };

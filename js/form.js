@@ -6,12 +6,13 @@ import { showErrorMessage, showSuccessMessage } from './messages.js';
 
 const MAX_COMMENT_LENGTH = 140;
 const MAX_HASHTAGS = 5;
-const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+const SUPPORTED_FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const formContainerElement = document.querySelector('.img-upload__form');
 const inputPhotoElement = formContainerElement.querySelector('.img-upload__input');
 const formElement = formContainerElement.querySelector('.img-upload__overlay');
 const closeFormBtnElement = formContainerElement.querySelector('.img-upload__cancel');
+const submitButton = formContainerElement.querySelector('.img-upload__submit');
 
 const hashtagInputElement = formContainerElement.querySelector('.text__hashtags');
 const commentInputElement = formContainerElement.querySelector('.text__description');
@@ -19,7 +20,6 @@ const commentInputElement = formContainerElement.querySelector('.text__descripti
 const effectsListElement = formContainerElement.querySelector('.effects__list');
 const imageElement = formContainerElement.querySelector('.img-upload__preview img');
 
-const resetCloseByEscape = (evt) => evt.stopPropagation();
 
 const regexpForHashtag = /^#[\wа-яё]{1,19}$/i;
 
@@ -29,7 +29,7 @@ const pristine = new Pristine(formContainerElement, {
   errorTextClass: 'img-upload__field-wrapper--error',
 });
 
-const closeForm = () => {
+const closeUploadForm = () => {
   formElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
@@ -45,7 +45,7 @@ const isErrorMessageShow = () => Boolean(document.body.querySelector('.error'));
 
 function closeFormByEscape (evt) {
   if (isEscapeKey(evt) && !isErrorMessageShow()) {
-    closeForm();
+    closeUploadForm();
   }
 }
 
@@ -61,7 +61,7 @@ const onChooseFileBtnClick = () => {
   openForm();
 
   const file = inputPhotoElement.files[0];
-  const isCorrectFileType = FILE_TYPES.some((item) => file.name.toLowerCase().endsWith(item));
+  const isCorrectFileType = SUPPORTED_FILE_TYPES.some((item) => file.name.toLowerCase().endsWith(item));
   if (isCorrectFileType) {
     imageElement.src = URL.createObjectURL(file);
   }
@@ -69,13 +69,6 @@ const onChooseFileBtnClick = () => {
     item.style.backgroundImage = `url(${URL.createObjectURL(file)})`;
   });
 };
-
-closeFormBtnElement.addEventListener('click', closeForm);
-hashtagInputElement.addEventListener('keydown', resetCloseByEscape);
-commentInputElement.addEventListener('keydown', resetCloseByEscape);
-effectsListElement.addEventListener('click', onEffectsListClick);
-formContainerElement.querySelector('.img-upload__scale').addEventListener('click', onScaleBtnClick);
-inputPhotoElement.addEventListener('change', onChooseFileBtnClick);
 
 const validateHashtag = (value) => {
   const hashtagArr = value.toLowerCase().trim().split(/\s+/);
@@ -107,15 +100,28 @@ pristine.addValidator(commentInputElement, validateComment, `Длина комм
 
 const sendForm = () => {
   showSuccessMessage();
-  closeForm();
-  formContainerElement.querySelector('.img-upload__submit').disabled = false;
+  closeUploadForm();
+  submitButton.disabled = false;
 };
 
-formContainerElement.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  if (pristine.validate()) {
-    const data = new FormData(formContainerElement);
-    formContainerElement.querySelector('.img-upload__submit').disabled = true;
-    sendData(sendForm, showErrorMessage, 'POST', data);
-  }
-});
+
+const initializeForm = () => {
+  const resetCloseByEscape = (evt) => evt.stopPropagation();
+
+  closeFormBtnElement.addEventListener('click', closeUploadForm);
+  hashtagInputElement.addEventListener('keydown', resetCloseByEscape);
+  commentInputElement.addEventListener('keydown', resetCloseByEscape);
+  effectsListElement.addEventListener('click', onEffectsListClick);
+  formContainerElement.querySelector('.img-upload__scale').addEventListener('click', onScaleBtnClick);
+  inputPhotoElement.addEventListener('change', onChooseFileBtnClick);
+
+  formContainerElement.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    if (pristine.validate()) {
+      const data = new FormData(formContainerElement);
+      submitButton.disabled = true;
+      sendData(sendForm, showErrorMessage, 'POST', data);
+    }
+  });
+};
+export { initializeForm };
