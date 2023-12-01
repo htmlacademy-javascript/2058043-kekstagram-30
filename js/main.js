@@ -8,7 +8,6 @@ setupForm();
 const loadPhotos = (data) => {
   renderPhotos(data);
   initFilter(data);
-
 };
 getData(loadPhotos, showDataErrorMessage);
 
